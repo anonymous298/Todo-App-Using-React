@@ -1,44 +1,59 @@
-import { useState } from 'react'
+import { useState } from 'react';
+// import ToDoContainer from './ToDoContainer';
 
 function ToDoList() {
     const [Tasks, setTasks] = useState([]);
     const [newTask, setNewTask] = useState("");
     const [checkedTodos, setcheckedTodos] = useState([]);
+    const [finishedButton, setfinishedButton] =useState(false);
 
     function updateInput(event) {
         setNewTask(event.target.value)
     }
 
     function addTask() {
-        setTasks([...Tasks, {todo : newTask, checked : false}]);
-        setNewTask("");
+        if (newTask.trim() !== ''){
+            setTasks([...Tasks, {todo : newTask, checked : false}]);
+            setNewTask("");
+        }
     }
 
-    function deleteTask(idx) {
+    function deleteTask(specificArray, setspecificArray, idx) {
 
-        const updatedTasks = Tasks.filter((val, index) => index !== idx);
+        const updatedTasks = specificArray.filter((val, index) => index !== idx);
 
-        // console.log(updatedTasks)
+        console.log(updatedTasks);
 
-        setTasks(updatedTasks);
+        setspecificArray(updatedTasks);
     }
 
-    function updateTask(todo, idx) {
+    function updateTask(todo, idx, specifiArray, setspecificArray) {
         setNewTask(todo);
 
-        const updatedTasks = Tasks.filter((val, index) => index !== idx);
+        const updatedTasks = specifiArray.filter((val, index) => index !== idx);
 
-        setTasks(updatedTasks);
+        setspecificArray(updatedTasks);
     }
 
-    function checkedTask(idx) {
-        let selectedTodo = Tasks[idx];
+    function checkedTask(specifiArray, setspecificArray, idx) {
+        let selectedTodo = specifiArray[idx];
 
         selectedTodo['checked'] = selectedTodo['checked'] ? false : true;
 
-        setcheckedTodos([...checkedTodos, selectedTodo]);
+        if (selectedTodo['checked']) {
+            setcheckedTodos([...checkedTodos, selectedTodo]);
+        }
 
-        // console.log(selectedTodo);
+        else {
+            setTasks([...Tasks, selectedTodo]);
+        }
+
+        // console.log(setcheckedTodos);
+
+        const updatedTasks = specifiArray.filter((val, index) => index !== idx);
+
+        setspecificArray(updatedTasks);
+        // console.log(checkedTodos);
 
         // const updatedTasks = Tasks.filter((val, index) => index !== idx);
 
@@ -48,6 +63,9 @@ function ToDoList() {
 
     return (
         <div className='flex justify-center items-center flex-col gap-5 bg-blue-400 w-[60%] m-auto mt-5 p-8 rounded-[20px] max-sm:w-[95%] max-sm:p-4'>
+            <h2 className='text-white font-bold text-[35px]'>Taskify - Manage your todos at one place</h2>
+
+            <h3 className='text-white text-[20px] font-bold self-start'>Add a todo</h3>
             <div className= 'flex gap-1 w-[100%]'>
 
                 <input
@@ -64,14 +82,22 @@ function ToDoList() {
                     Add</button>
             </div>
 
-            <div className="todo-container w-[100%] flex flex-col gap-2">
-                {Tasks.map((todos, idx) => {
+            <div className='self-start flex justify-center items-center gap-2'>
+                <input type="checkbox" id='finsihed' onClick={() => {setfinishedButton(finishedButton ? false : true)}}/>
+                <label htmlFor="finsihed" className='text-white'>Show Finished</label>
+            </div>
+
+            <div className='border-gray-600 border-[1px] w-[97%] bg-black mt-3'></div>
+
+            {finishedButton ? <div className="todo-container w-[100%] flex flex-col gap-2">
+                {checkedTodos.map((todos, idx) => {
                     return (
                         <div className='w-[100%] bg-blue-200 rounded-[10px] p-1 flex justify-between items-center'>
                             <div className='flex gap-2 items-center justify-center'>
                                 <input
                                     type="checkbox"
-                                    onClick={() => {checkedTask(idx)}}
+                                    onClick={() => {checkedTask(checkedTodos, setcheckedTodos, idx)}}
+                                    checked
                                 />
                                 {todos.checked ? <p className=' font-semibold line-through text-shadow-gray-500 opacity-[0.4]'>{todos.todo}</p> : <p className=' font-semibold'>{todos.todo}</p>}
                             </div>
@@ -80,19 +106,50 @@ function ToDoList() {
 
                                 <button
                                     className='bg-orange-400 p-2 rounded-[10px] text-white font-bold cursor-pointer hover:bg-orange-300'
-                                    onClick={() => {updateTask(todos.todo, idx)}}
+                                    onClick={() => {updateTask(todos.todo, idx, checkedTodos, setcheckedTodos)}}
                                 >Update</button>
 
                                 <button
                                     className='bg-red-800 p-2 rounded-[10px] text-white font-bold cursor-pointer hover:bg-red-700'
-                                    onClick={() => {deleteTask(idx)}}>
+                                    onClick={() => {deleteTask(checkedTodos, setcheckedTodos, idx)}}>
                                 Delete</button>
 
                             </div>
                         </div>
                     )
                 })}
-            </div>
+            </div> : <div className="todo-container w-[100%] flex flex-col gap-2">
+                {Tasks.map((todos, idx) => {
+                    return (
+                        <div className='w-[100%] bg-blue-200 rounded-[10px] p-1 flex justify-between items-center'>
+                            <div className='flex gap-2 items-center justify-center'>
+                                <input
+                                    type="checkbox"
+                                    onClick={() => {checkedTask(Tasks,setTasks, idx)}}
+                                    checked={false}
+                                />
+                                {todos.checked ? <p className=' font-semibold line-through text-shadow-gray-500 opacity-[0.4]'>{todos.todo}</p> : <p className=' font-semibold'>{todos.todo}</p>}
+                            </div>
+
+                            <div className='flex gap-1'>
+
+                                <button
+                                    className='bg-orange-400 p-2 rounded-[10px] text-white font-bold cursor-pointer hover:bg-orange-300'
+                                    onClick={() => {updateTask(todos.todo, idx, Tasks, setTasks)}}
+                                >Update</button>
+
+                                <button
+                                    className='bg-red-800 p-2 rounded-[10px] text-white font-bold cursor-pointer hover:bg-red-700'
+                                    onClick={() => {deleteTask(Tasks, setTasks, idx)}}>
+                                Delete</button>
+
+                            </div>
+                        </div>
+                    )
+                })}
+            </div>}
+            
+            
         
         </div>
     )
