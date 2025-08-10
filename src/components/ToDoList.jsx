@@ -16,6 +16,10 @@ function ToDoList() {
             setTasks([...Tasks, {todo : newTask, checked : false}]);
             setNewTask("");
         }
+
+        else {
+            alert('Please Enter Something Before Adding!');
+        }
     }
 
     function deleteTask(specificArray, setspecificArray, idx) {
@@ -63,7 +67,7 @@ function ToDoList() {
 
     return (
         <div className='flex justify-center items-center flex-col gap-5 bg-blue-400 w-[60%] m-auto mt-5 p-8 rounded-[20px] max-sm:w-[95%] max-sm:p-4'>
-            <h2 className='text-white font-bold text-[35px]'>Taskify - Manage your todos at one place</h2>
+            <h2 className='text-purple-900 font-bold text-[35px] max-sm:text-[27px]'>Taskify - Manage your todos at one place</h2>
 
             <h3 className='text-white text-[20px] font-bold self-start'>Add a todo</h3>
             <div className= 'flex gap-1 w-[100%]'>
