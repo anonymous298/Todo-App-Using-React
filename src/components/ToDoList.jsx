@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { FaPenToSquare } from "react-icons/fa6";
+import { AiFillDelete } from "react-icons/ai";
 // import ToDoContainer from './ToDoContainer';
 
 function ToDoList() {
@@ -111,12 +113,12 @@ function ToDoList() {
                                 <button
                                     className='bg-orange-400 p-2 rounded-[10px] text-white font-bold cursor-pointer hover:bg-orange-300'
                                     onClick={() => {updateTask(todos.todo, idx, checkedTodos, setcheckedTodos)}}
-                                >Update</button>
+                                ><FaPenToSquare /></button>
 
                                 <button
                                     className='bg-red-800 p-2 rounded-[10px] text-white font-bold cursor-pointer hover:bg-red-700'
                                     onClick={() => {deleteTask(checkedTodos, setcheckedTodos, idx)}}>
-                                Delete</button>
+                                <AiFillDelete /></button>
 
                             </div>
                         </div>
@@ -140,12 +142,12 @@ function ToDoList() {
                                 <button
                                     className='bg-orange-400 p-2 rounded-[10px] text-white font-bold cursor-pointer hover:bg-orange-300'
                                     onClick={() => {updateTask(todos.todo, idx, Tasks, setTasks)}}
-                                >Update</button>
+                                ><FaPenToSquare /></button>
 
                                 <button
                                     className='bg-red-800 p-2 rounded-[10px] text-white font-bold cursor-pointer hover:bg-red-700'
                                     onClick={() => {deleteTask(Tasks, setTasks, idx)}}>
-                                Delete</button>
+                                <AiFillDelete /></button>
 
                             </div>
                         </div>
