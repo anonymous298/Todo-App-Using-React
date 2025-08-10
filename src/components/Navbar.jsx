@@ -5,8 +5,8 @@ function Navbar() {
                 <h2 className=" text-3xl font-bold text-white">Taskify</h2>
                 <ul className="flex gap-7">
                     <li className="hover:text-white transition cursor-pointer underline text-white">Home</li>
-                    <li className="hover:text-white transition cursor-pointer hover:underline">Tasks</li>
-                    <li className="hover:text-white transition cursor-pointer hover:underline">Login</li>
+                    <li className="hover:text-white transition cursor-pointer hover:underline max-sm:hidden">Tasks</li>
+                    <li className="hover:text-white transition cursor-pointer hover:underline max-sm:hidden">Login</li>
                 </ul>
             </div>
         </nav>        
