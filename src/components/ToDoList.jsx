@@ -3,13 +3,14 @@ import { useState } from 'react'
 function ToDoList() {
     const [Tasks, setTasks] = useState([]);
     const [newTask, setNewTask] = useState("");
+    const [checkedTodos, setcheckedTodos] = useState([]);
 
     function updateInput(event) {
         setNewTask(event.target.value)
     }
 
     function addTask() {
-        setTasks([...Tasks, newTask]);
+        setTasks([...Tasks, {todo : newTask, checked : false}]);
         setNewTask("");
     }
 
@@ -30,8 +31,23 @@ function ToDoList() {
         setTasks(updatedTasks);
     }
 
+    function checkedTask(idx) {
+        let selectedTodo = Tasks[idx];
+
+        selectedTodo['checked'] = selectedTodo['checked'] ? false : true;
+
+        setcheckedTodos([...checkedTodos, selectedTodo]);
+
+        // console.log(selectedTodo);
+
+        // const updatedTasks = Tasks.filter((val, index) => index !== idx);
+
+        // setTasks(updatedTasks);
+
+    }
+
     return (
-        <div className='flex justify-center items-center flex-col gap-5 bg-blue-400 w-[60%] m-auto mt-5 p-8 rounded-[20px]'>
+        <div className='flex justify-center items-center flex-col gap-5 bg-blue-400 w-[60%] m-auto mt-5 p-8 rounded-[20px] max-sm:w-[95%] max-sm:p-4'>
             <div className= 'flex gap-1 w-[100%]'>
 
                 <input
@@ -49,18 +65,22 @@ function ToDoList() {
             </div>
 
             <div className="todo-container w-[100%] flex flex-col gap-2">
-                {Tasks.map((todo, idx) => {
+                {Tasks.map((todos, idx) => {
                     return (
                         <div className='w-[100%] bg-blue-200 rounded-[10px] p-1 flex justify-between items-center'>
-                            
-                            <p className=' font-semibold'>{todo}</p>
-                            {/* <h2>{idx}</h2> */}
+                            <div className='flex gap-2 items-center justify-center'>
+                                <input
+                                    type="checkbox"
+                                    onClick={() => {checkedTask(idx)}}
+                                />
+                                {todos.checked ? <p className=' font-semibold line-through text-shadow-gray-500 opacity-[0.4]'>{todos.todo}</p> : <p className=' font-semibold'>{todos.todo}</p>}
+                            </div>
 
                             <div className='flex gap-1'>
 
                                 <button
                                     className='bg-orange-400 p-2 rounded-[10px] text-white font-bold cursor-pointer hover:bg-orange-300'
-                                    onClick={() => {updateTask(todo, idx)}}
+                                    onClick={() => {updateTask(todos.todo, idx)}}
                                 >Update</button>
 
                                 <button
